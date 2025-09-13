@@ -14,17 +14,17 @@ const FILLERS: Array<{ src: string; href: string; alt?: string }> = [
   {
     src: "/assets/images/logo_small_red_black.png",
     href: "https://observatornews.ro",
-    alt: "Check this out",
+    alt: "Observator News",
   },
   {
-    src: "/fillers/slot2.jpg",
+    src: "/assets/images/instagram.jpg",
     href: "https://observatornews.ro",
-    alt: "Learn more",
+    alt: "Instagram",
   },
   {
-    src: "/fillers/slot3.jpg",
+    src: "/assets/images/tiktok.png",
     href: "https://observatornews.ro",
-    alt: "Get started",
+    alt: "TikTok",
   },
 ];
 
@@ -55,57 +55,68 @@ export default async function HomePage() {
   );
 
   return (
-    <main className="max-w-6xl mx-auto p-6">
-      <ul className="grid grid-cols-3 gap-6">
-        {/* Real posts */}
-        {posts?.map((p) => (
-          <li
-            key={p.id}
-            className="overflow-hidden rounded-lg"
-          >
-            <Link
-              href={p.link_url ?? "#"}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="block"
+    <main className="w-full bg-stone-100 h-screen ">
+      <section className="max-w-6xl mx-auto lg:p-6 p-2 bg-stone-100">
+        <Image
+          width={1000}
+          height={400}
+          src="/assets/images/cover.jpg"
+          alt="cover"
+          className="w-full pb-6"
+        />
+        <p className="text-center lg:pb-10 pb-5 text-xs lg:text-lg text-stone-700">
+          Apasă pe imagine pentru a accesa întreaga știre.
+        </p>
+        <ul className="grid grid-cols-3 gap-3">
+          {posts?.map((p) => (
+            <li
+              key={p.id}
+              className="overflow-hidden rounded-xs"
             >
-              <div className="relative w-full aspect-[4/3]">
-                <Image
-                  src={p.image_url}
-                  alt={p.title}
-                  fill
-                  className="object-cover hover:scale-105 transition-transform"
-                  sizes="33vw"
-                />
-              </div>
-            </Link>
-          </li>
-        ))}
+              <Link
+                href={p.link_url ?? "#"}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="block"
+              >
+                <div className="relative w-full aspect-[4/5]">
+                  <Image
+                    src={p.image_url}
+                    alt={p.title}
+                    fill
+                    className="object-cover hover:scale-105 hover:grayscale-50 transition-transform duration-500"
+                    sizes="33vw"
+                  />
+                </div>
+              </Link>
+            </li>
+          ))}
 
-        {fillers.map((f, i) => (
-          <li
-            key={`filler-${i}`}
-            className="overflow-hidden rounded-lg"
-          >
-            <Link
-              href={f.href}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="block"
+          {fillers.map((f, i) => (
+            <li
+              key={`filler-${i}`}
+              className="overflow-hidden rounded-xs"
             >
-              <div className="relative w-full aspect-[4/3]">
-                <Image
-                  src={f.src}
-                  alt={f.alt ?? "placeholder"}
-                  fill
-                  className="object-cover hover:scale-105 transition-transform"
-                  sizes="33vw"
-                />
-              </div>
-            </Link>
-          </li>
-        ))}
-      </ul>
+              <Link
+                href={f.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="block"
+              >
+                <div className="relative w-full aspect-[4/5]">
+                  <Image
+                    src={f.src}
+                    alt={f.alt ?? "placeholder"}
+                    fill
+                    className="object-cover hover:scale-105 hover:grayscale-50 transition-transform duration-500"
+                    sizes="33vw"
+                  />
+                </div>
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </section>
     </main>
   );
 }

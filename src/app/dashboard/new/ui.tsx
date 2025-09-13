@@ -1,4 +1,3 @@
-// src/app/dashboard/new/ui.tsx
 "use client";
 
 import { useActionState } from "react";
@@ -12,7 +11,7 @@ export default function NewPostForm() {
   const [state, formAction] = useActionState(createPost, initial);
 
   return (
-    <main className="max-w-2xl mx-auto pt-10">
+    <main className="max-w-2xl mx-auto ">
       <h1 className="text-2xl font-semibold mb-6">New Post</h1>
 
       <form
