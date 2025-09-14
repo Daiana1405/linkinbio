@@ -1,7 +1,7 @@
 import { Suspense } from "react";
 import LoginForm from "./form";
 
-export const dynamic = "force-dynamic"; // avoid prerender/export issues
+export const dynamic = "force-dynamic";
 export const revalidate = 0;
 
 export default function LoginPage() {

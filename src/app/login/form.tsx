@@ -1,12 +1,26 @@
+// src/app/login/form.tsx
 "use client";
 
-import { useActionState } from "react";
-import { login } from "./actions";
+import { useActionState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { login, type LoginState } from "./actions";
+import SubmitButton from "@/components/SubmitButton";
 
-const initial = { ok: true as const, message: "" as string | undefined };
+const initial: LoginState = { ok: false };
 
 export default function LoginForm() {
-  const [state, formAction] = useActionState(login, initial);
+  const router = useRouter();
+  const [state, formAction] = useActionState<LoginState, FormData>(
+    login,
+    initial
+  );
+
+  useEffect(() => {
+    if (state.ok) {
+      router.replace(state.redirectTo ?? "/");
+      router.refresh();
+    }
+  }, [state.ok, state.redirectTo, router]);
 
   return (
     <form
@@ -29,13 +43,11 @@ export default function LoginForm() {
         className="border rounded px-3 py-2 w-full"
       />
 
-      {state?.ok === false && (
+      {!state.ok && state.message && (
         <p className="text-red-600 text-sm">{state.message}</p>
       )}
 
-      <button className="rounded px-4 py-2 bg-black text-white w-full">
-        Autentificare
-      </button>
+      <SubmitButton>Autentificare</SubmitButton>
     </form>
   );
 }

@@ -11,7 +11,7 @@ export default function NewPostForm() {
   const [state, formAction] = useActionState(createPost, initial);
 
   return (
-    <main className="max-w-2xl mx-auto ">
+    <main className="max-w-2xl mx-auto h-screen">
       <h1 className="text-2xl font-semibold mb-6 mt-4 text-stone-900">
         New Post
       </h1>

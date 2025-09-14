@@ -1,3 +1,4 @@
+import GalleryImage from "@/components/GalleryImage";
 import Socials from "@/components/Socials";
 import { createClient } from "@/lib/supabase/server";
 import Image from "next/image";
@@ -82,7 +83,7 @@ export default async function HomePage() {
                 rel="noopener noreferrer"
                 className="block"
               >
-                <div className="relative w-full aspect-[4/5]">
+                {/* <div className="relative w-full aspect-[4/5]">
                   <Image
                     src={p.image_url}
                     alt={p.title}
@@ -90,7 +91,12 @@ export default async function HomePage() {
                     className="object-cover hover:scale-105 hover:grayscale-50 transition-transform duration-500"
                     sizes="33vw"
                   />
-                </div>
+                </div> */}
+                <GalleryImage
+                  src={p.image_url}
+                  alt={p.title}
+                  className="object-cover hover:scale-105 hover:grayscale-50 transition-transform duration-500"
+                />
               </Link>
             </li>
           ))}

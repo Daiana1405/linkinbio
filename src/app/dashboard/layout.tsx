@@ -6,7 +6,7 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }) {
   return (
-    <section className="w-full bg-stone-50 h-100vh">
+    <section className="w-full bg-stone-50 min-h-screen">
       <Nav />
       {children}
     </section>

@@ -25,7 +25,6 @@ export default async function DashboardPage() {
   const { data, error } = await supabase
     .from("posts")
     .select("id,title,image_url,image_path,published,created_at,sort_index")
-    .eq("user_id", user.id)
     .order("sort_index", { ascending: true })
     .order("created_at", { ascending: false });
 

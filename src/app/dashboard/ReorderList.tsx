@@ -1,4 +1,3 @@
-// src/app/dashboard/ReorderList.tsx
 "use client";
 
 import { useState, useMemo, useRef } from "react";
@@ -27,8 +26,8 @@ function move<T>(arr: T[], from: number, to: number): T[] {
 export default function ReorderList({ posts }: { posts: Row[] }) {
   const [items, setItems] = useState(posts);
   const [dragId, setDragId] = useState<string | null>(null);
-  const orderRef = useRef<HTMLInputElement>(null);
 
+  const orderRef = useRef<HTMLInputElement>(null);
   const currentIds = items.map((i) => i.id);
   const initialIds = useMemo(() => posts.map((p) => p.id).join(","), [posts]);
   const changed = currentIds.join(",") !== initialIds;
@@ -60,24 +59,41 @@ export default function ReorderList({ posts }: { posts: Row[] }) {
   }
 
   return (
-    <form
-      action={formAction}
-      onSubmit={beforeSubmit}
-      className="space-y-4"
-    >
-      <input
-        ref={orderRef}
-        type="hidden"
-        name="order"
-      />
+    <div className="space-y-4">
       {state?.ok === false && (
         <p className="text-red-600 text-sm">{state.message}</p>
       )}
       {state?.ok && state?.message && (
         <p className="text-green-700 text-sm">{state.message}</p>
       )}
+      <form
+        action={formAction}
+        onSubmit={beforeSubmit}
+        className="flex items-center gap-2"
+      >
+        <input
+          ref={orderRef}
+          type="hidden"
+          name="order"
+        />
+        <button
+          type="submit"
+          disabled={!changed || isPending}
+          className="rounded px-3 py-1.5 bg-stone-900 text-white disabled:opacity-50"
+        >
+          {isPending ? "Se salvează…" : "Salvează ordinea"}
+        </button>
+        <button
+          type="button"
+          disabled={!changed}
+          onClick={() => setItems(posts)}
+          className="text-sm underline disabled:opacity-50"
+        >
+          Resetează
+        </button>
+      </form>
 
-      <ul className="divide-y ">
+      <ul className="divide-y">
         {items.map((item) => (
           <li
             key={item.id}
@@ -91,7 +107,7 @@ export default function ReorderList({ posts }: { posts: Row[] }) {
           >
             <span className="cursor-grab select-none text-gray-400">⠿</span>
 
-            <div className="relative w-1/3 h-60 overflow-hidden  bg-stone-50 flex-shrink-0">
+            <div className="relative w-1/3 h-60 overflow-hidden bg-stone-50 flex-shrink-0">
               {item.image_url ? (
                 <Image
                   fill
@@ -164,24 +180,6 @@ export default function ReorderList({ posts }: { posts: Row[] }) {
           </li>
         ))}
       </ul>
-
-      <div className="flex items-center gap-2">
-        <button
-          type="submit"
-          disabled={!changed || isPending}
-          className="rounded px-3 py-1.5 bg-stone-900 text-white disabled:opacity-50"
-        >
-          {isPending ? "Se salvează…" : "Salvează ordinea"}
-        </button>
-        <button
-          type="button"
-          disabled={!changed}
-          onClick={() => setItems(posts)}
-          className="text-sm underline disabled:opacity-50"
-        >
-          Resetează
-        </button>
-      </div>
-    </form>
+    </div>
   );
 }
