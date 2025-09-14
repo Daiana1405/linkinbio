@@ -17,10 +17,10 @@ export const revalidate = 0;
 export default async function EditPostPage({
   params,
 }: {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }) {
-  // ✅ folosește z.uuid(), nu z.string().uuid()
-  const parsed = z.uuid().safeParse(params.id);
+  const { id } = await params;
+  const parsed = z.uuid().safeParse(id);
   if (!parsed.success) return notFound();
 
   const supabase = await createClient();

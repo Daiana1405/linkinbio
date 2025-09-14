@@ -4,7 +4,6 @@ import type { NextRequest } from "next/server";
 import { createServerClient } from "@supabase/ssr";
 
 function parseAllowed(): Set<string> {
-  // e.g. ALLOWED_EMAILS="one@example.com,two@example.com,three@example.com"
   const raw = process.env.ALLOWED_EMAILS ?? "";
   return new Set(
     raw
@@ -32,25 +31,21 @@ export async function middleware(req: NextRequest) {
     }
   );
 
-  // Keep the session fresh (rotates cookies when needed)
   const {
     data: { session },
   } = await supabase.auth.getSession();
 
-  // Guard protected areas
   const pathname = req.nextUrl.pathname;
   const isProtected =
     pathname.startsWith("/dashboard") || pathname.startsWith("/api/admin");
 
   if (isProtected) {
-    // 1) Must be logged in
     if (!session) {
       const url = new URL("/login", req.url);
       url.searchParams.set("next", pathname + req.nextUrl.search);
       return NextResponse.redirect(url);
     }
 
-    // 2) Must be on the allow-list
     const allowed = parseAllowed();
     const email = (session.user.email || "").toLowerCase();
     if (!allowed.has(email)) {
@@ -63,7 +58,6 @@ export async function middleware(req: NextRequest) {
   return res;
 }
 
-// Only run on private/admin paths to keep perf
 export const config = {
   matcher: ["/dashboard/:path*", "/api/admin/:path*"],
 };
