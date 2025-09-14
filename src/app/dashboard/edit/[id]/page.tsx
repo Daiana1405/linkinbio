@@ -33,7 +33,7 @@ export default async function EditPostPage({
     .from("posts")
     .select("id,title,link_url,image_url,image_path,published,user_id")
     .eq("id", parsed.data)
-    .maybeSingle(); // null dacă nu există
+    .maybeSingle();
 
   if (error || !data) return notFound();
   if (data.user_id !== user.id) redirect("/dashboard");

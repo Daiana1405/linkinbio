@@ -33,8 +33,9 @@ export default async function HomePage() {
   const supabase = await createClient();
   const { data, error } = await supabase
     .from("posts")
-    .select("id,image_url,link_url")
+    .select("id,title,image_url,link_url")
     .eq("published", true)
+    .order("sort_index", { ascending: true })
     .order("created_at", { ascending: false });
 
   if (error) {
@@ -56,7 +57,7 @@ export default async function HomePage() {
   );
 
   return (
-    <main className="w-full bg-stone-100 h-screen ">
+    <main className="w-full bg-stone-100 h-100vh ">
       <section className="max-w-6xl mx-auto bg-stone-100">
         <Image
           width={1000}
@@ -110,7 +111,7 @@ export default async function HomePage() {
                     src={f.src}
                     alt={f.alt ?? "placeholder"}
                     fill
-                    className="object-cover hover:scale-105 hover:grayscale-50 transition-transform duration-500"
+                    className="object-contain hover:scale-105 hover:grayscale-50 transition-transform duration-500"
                     sizes="33vw"
                   />
                 </div>

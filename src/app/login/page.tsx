@@ -3,6 +3,7 @@
 import { useActionState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { login, type LoginState } from "./actions";
+import Image from "next/image";
 
 const initialState: LoginState = { ok: true };
 
@@ -21,7 +22,14 @@ export default function LoginPage() {
 
   return (
     <main className="max-w-md mx-auto pt-16">
-      <h1 className="text-2xl font-semibold mb-4">Sign in</h1>
+      <Image
+        src="/assets/icons/observator.png"
+        alt="observator logo"
+        width={300}
+        height={50}
+        className="mx-auto pb-10"
+      />
+      <h1 className="text-2xl font-semibold mb-4 text-center">Sign in</h1>
 
       <form
         action={formAction}
@@ -47,7 +55,7 @@ export default function LoginPage() {
           <p className="text-red-600 text-sm">{state.message}</p>
         )}
 
-        <button className="rounded px-4 py-2 bg-black text-white w-full">
+        <button className="rounded px-4 py-2 bg-stone-700 hover:bg-stone-800 text-white w-full cursor-pointer">
           Sign in
         </button>
       </form>

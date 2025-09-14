@@ -12,7 +12,9 @@ export default function NewPostForm() {
 
   return (
     <main className="max-w-2xl mx-auto ">
-      <h1 className="text-2xl font-semibold mb-6">New Post</h1>
+      <h1 className="text-2xl font-semibold mb-6 mt-4 text-stone-900">
+        New Post
+      </h1>
 
       <form
         action={formAction}
@@ -80,7 +82,7 @@ export default function NewPostForm() {
           </div>
         )}
 
-        <button className="rounded px-4 py-2 bg-black text-white">
+        <button className="rounded px-4 py-2 bg-stone-800 hover:bg-stone-900 text-white cursor-pointer">
           Publish
         </button>
       </form>

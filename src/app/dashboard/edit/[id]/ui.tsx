@@ -24,12 +24,12 @@ export default function EditForm({ post }: { post: PostForEdit }) {
   return (
     <main className="max-w-2xl mx-auto p-6 space-y-6">
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-semibold">Edit post</h1>
+        <h1 className="text-2xl font-semibold">Edit link</h1>
         <a
           href="/dashboard"
           className="underline text-sm"
         >
-          Back
+          Înapoi
         </a>
       </div>
 
@@ -50,7 +50,7 @@ export default function EditForm({ post }: { post: PostForEdit }) {
         />
 
         <div>
-          <label className="block text-sm font-medium mb-1">Title</label>
+          <label className="block text-sm font-medium mb-1">Titlu</label>
           <input
             name="title"
             defaultValue={post.title}
@@ -96,12 +96,12 @@ export default function EditForm({ post }: { post: PostForEdit }) {
           {post.image_url && (
             <div className="mt-3">
               <p className="text-xs text-gray-600 mb-1">Current image:</p>
-              <div className="relative w-full h-48">
+              <div className="relative w-full h-100">
                 <Image
                   fill
                   src={post.image_url}
                   alt="current"
-                  className="object-cover rounded"
+                  className="object-contain"
                   sizes="(max-width: 768px) 100vw, 50vw"
                 />
               </div>
@@ -116,8 +116,8 @@ export default function EditForm({ post }: { post: PostForEdit }) {
           <p className="text-green-700 text-sm">{state.message}</p>
         )}
 
-        <button className="rounded px-4 py-2 bg-black text-white">
-          Save changes
+        <button className="rounded px-4 py-2 bg-stone-800 hover:bg-stone-900 cursor-pointer text-white">
+          Salvează
         </button>
       </form>
     </main>
