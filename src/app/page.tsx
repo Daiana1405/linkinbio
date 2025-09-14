@@ -1,3 +1,4 @@
+import Socials from "@/components/Socials";
 import { createClient } from "@/lib/supabase/server";
 import Image from "next/image";
 import Link from "next/link";
@@ -17,12 +18,12 @@ const FILLERS: Array<{ src: string; href: string; alt?: string }> = [
     alt: "Observator News",
   },
   {
-    src: "/assets/images/instagram.jpg",
+    src: "/assets/icons/instagram.svg",
     href: "https://observatornews.ro",
     alt: "Instagram",
   },
   {
-    src: "/assets/images/tiktok.png",
+    src: "/assets/icons/tiktok.svg",
     href: "https://observatornews.ro",
     alt: "TikTok",
   },
@@ -56,7 +57,7 @@ export default async function HomePage() {
 
   return (
     <main className="w-full bg-stone-100 h-screen ">
-      <section className="max-w-6xl mx-auto lg:p-6 p-2 bg-stone-100">
+      <section className="max-w-6xl mx-auto bg-stone-100">
         <Image
           width={1000}
           height={400}
@@ -64,10 +65,11 @@ export default async function HomePage() {
           alt="cover"
           className="w-full pb-6"
         />
+        <Socials />
         <p className="text-center lg:pb-10 pb-5 text-xs lg:text-lg text-stone-700">
           Apasă pe imagine pentru a accesa întreaga știre.
         </p>
-        <ul className="grid grid-cols-3 gap-3">
+        <ul className="grid grid-cols-3 md:gap-3 gap-1 md:p-3 p-1">
           {posts?.map((p) => (
             <li
               key={p.id}
