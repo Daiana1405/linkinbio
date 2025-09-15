@@ -1,36 +1,77 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Observator — Link in Bio CMS
 
-## Getting Started
+Public **link-in-bio** page (3-column gallery) + **mini CMS** for the editorial team: add / edit / delete links, **drag-and-drop reordering**, image upload with **spinner**, and access restricted to approved emails.
 
-First, run the development server:
+Demo: https://linkinbio-observator.netlify.app/
+
+<!-- ![Homepage — 3-column gallery](./public/assets/readme/homepage.jpeg) -->
+
+## <img src="./public/assets/readme/homepage.jpeg" alt="Homepage — 3-column gallery" width="300">
+
+## ✨ Features
+
+- **Public homepage** (`/`): 3-column gallery; clicking an image opens the article.
+- **Brand fillers**: if a row misses items, we auto-fill it with brand banners.
+- **Authentication** (`/login`): allow-list (approved emails only).
+- **Dashboard** (`/dashboard`): list with thumbnail, title, date, status (Published/Draft).
+- **Reordering**: drag-and-drop + “Save order”.
+- **Create / Edit** (`/dashboard/new`, `/dashboard/edit/[id]`), including image replacement.
+- **Validation with Zod** (UI + server actions).
+- **Security**: Postgres RLS, server-only env vars, safe image types and size limits.
+
+---
+
+## 🧱 Tech Stack
+
+- **Next.js 15** (App Router, **Server Actions**) + **React**, **TypeScript**
+- **Tailwind CSS** for styling
+- **Supabase**: Postgres (RLS), Auth, Storage
+- **@supabase/ssr** for server-side sessions
+- **Zod** for validation
+- Hosting on **Netlify**, code on **GitHub**
+- Image optimization via **next/image**
+
+---
+
+## ✅ Prerequisites
+
+- **Node.js 18+** (LTS recommended)
+- A **Supabase** project
+- (Optional) **Netlify** account for deploy
+
+---
+
+## 🔐 Environment Variables
+
+> **Important:** Copy the **`.env.local` file you received** into the **project root** (same folder as `package.json`).  
+> Do **not** commit this file.
+
+Required keys (example):
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+# Supabase
+NEXT_PUBLIC_SUPABASE_URL=...
+NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=...  # or NEXT_PUBLIC_SUPABASE_ANON_KEY (match your code)
+
+# Site
+NEXT_PUBLIC_SITE_URL=http://localhost:3000
+
+# Login allow-list (comma separated)
+ALLOWED_EMAILS=daiana.muflic@yahoo.com,test@test.com
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Local Setup
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### 1. Clone and install
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- git clone https://github.com/<user>/<repo>.git
+- cd <repo>
+- npm i
 
-## Learn More
+### 2. Add environment file
 
-To learn more about Next.js, take a look at the following resources:
+Place the provided .env.local at the project root.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### 3. Run dev
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+npm run dev
