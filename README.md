@@ -4,6 +4,11 @@ Public **link-in-bio** page (3-column gallery) + **mini CMS** for the editorial 
 
 Demo: https://linkinbio-observator.netlify.app/
 
+Test account:
+
+- test@test.com
+- Parola123
+
 <!-- ![Homepage — 3-column gallery](./public/assets/readme/homepage.jpeg) -->
 
 ## <img src="./public/assets/readme/homepage.jpeg" alt="Homepage — 3-column gallery" width="300">
