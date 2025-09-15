@@ -30,13 +30,16 @@ const FILLERS: Array<{ src: string; href: string; alt?: string }> = [
   },
 ];
 
+export const revalidate = 0;
+export const dynamic = "force-dynamic";
+
 export default async function HomePage() {
   const supabase = await createClient();
   const { data, error } = await supabase
     .from("posts")
     .select("id,title,image_url,link_url")
     .eq("published", true)
-    .order("sort_index", { ascending: true })
+    .order("sort_index", { ascending: true, nullsFirst: false })
     .order("created_at", { ascending: false });
 
   if (error) {

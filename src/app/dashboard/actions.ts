@@ -27,13 +27,19 @@ export async function saveOrder(
   }
 
   for (let i = 0; i < ids.length; i++) {
-    const { error } = await supabase
+    const { error, data } = await supabase
       .from("posts")
       .update({ sort_index: i + 1 })
       .eq("id", ids[i])
-      .eq("user_id", user.id);
+      .select("id")
+      .maybeSingle();
 
     if (error) return { ok: false, message: error.message };
+    if (!data)
+      return {
+        ok: false,
+        message: "Nu s-a putut salva ordinea (permisiuni sau id invalid).",
+      };
   }
 
   revalidatePath("/");
@@ -60,8 +66,7 @@ export async function deletePost(formData: FormData): Promise<void> {
   const { error: delErr } = await supabase
     .from("posts")
     .delete()
-    .eq("id", id.data)
-    .eq("user_id", user.id);
+    .eq("id", id.data);
 
   if (!delErr) {
     const path = imagePath.success ? imagePath.data : undefined;
