@@ -1,3 +1,4 @@
+// src/app/dashboard/new/server-actions.ts
 "use server";
 
 import { z } from "zod";
@@ -12,7 +13,6 @@ export type CreatePostState = {
 };
 
 const MAX_BYTES = 5 * 1024 * 1024;
-
 const ALLOWED_MIME = new Set(["image/jpeg", "image/png", "image/webp"]);
 
 const schema = z.object({
@@ -35,6 +35,7 @@ export async function createPost(
   formData: FormData
 ): Promise<CreatePostState> {
   const supabase = await createClient();
+
   const {
     data: { user },
   } = await supabase.auth.getUser();
@@ -44,16 +45,14 @@ export async function createPost(
     title: String(formData.get("title") ?? ""),
     link_url: String(formData.get("link_url") ?? ""),
   });
-  if (!parsed.success) {
+  if (!parsed.success)
     return { ok: false, message: parsed.error.issues[0].message };
-  }
 
   const file = formData.get("image");
   if (!(file instanceof File))
     return { ok: false, message: "Image is required" };
-  if (!ALLOWED_MIME.has(file.type)) {
+  if (!ALLOWED_MIME.has(file.type))
     return { ok: false, message: "Only JPG, PNG, or WebP images are allowed" };
-  }
   if (file.size === 0) return { ok: false, message: "Empty file" };
   if (file.size > MAX_BYTES)
     return { ok: false, message: "Image is too large (max 5 MB)" };
@@ -61,9 +60,14 @@ export async function createPost(
   const safeName = file.name.replace(/[^\w.\-]+/g, "_");
   const path = `${user.id}/${Date.now()}-${randomUUID()}-${safeName}`;
 
+  // Netlify-safe: send ArrayBuffer
+  const ab = await file.arrayBuffer();
   const { error: upErr } = await supabase.storage
     .from("images")
-    .upload(path, file, { contentType: file.type });
+    .upload(path, ab, {
+      contentType: file.type || "application/octet-stream",
+      upsert: false,
+    });
   if (upErr) return { ok: false, message: upErr.message };
 
   const { data: pub } = supabase.storage.from("images").getPublicUrl(path);
