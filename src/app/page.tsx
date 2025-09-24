@@ -1,7 +1,7 @@
 import Socials from "@/components/Socials";
-import Image from "next/image";
 import { createClient } from "@/lib/supabase/server";
 import GalleryClient from "./gallery-client";
+import VideoBanner from "@/components/VideoBanner";
 
 export const revalidate = 0;
 export const dynamic = "force-dynamic";
@@ -60,13 +60,7 @@ export default async function HomePage() {
   return (
     <main className="w-full bg-stone-100 min-h-screen">
       <section className="max-w-6xl mx-auto bg-stone-100">
-        <Image
-          width={1000}
-          height={400}
-          src="/assets/images/cover.jpg"
-          alt="cover"
-          className="w-full pb-6"
-        />
+        <VideoBanner />
         <Socials />
         <p className="text-center lg:pb-10 pb-5 text-xs lg:text-lg text-stone-700">
           Apasă pe imagine pentru a accesa întreaga știre.
