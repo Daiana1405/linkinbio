@@ -3,10 +3,10 @@ import { createClient } from "@/lib/supabase/server";
 import GalleryClient from "./gallery-client";
 import VideoBanner from "@/components/VideoBanner";
 
-export const revalidate = 0;
-export const dynamic = "force-dynamic";
+export const revalidate = 60;
 
-const PAGE_SIZE = 15;
+const PAGE_SIZE = 9;
+const MAX_VISIBLE_POSTS = 100;
 
 export default async function HomePage() {
   const supabase = await createClient();
@@ -23,14 +23,14 @@ export default async function HomePage() {
 
   if (error) {
     return (
-      <main className="max-w-6xl mx-auto p-6">
+      <main className="mx-auto max-w-6xl p-6">
         <p className="text-red-600">Failed to load posts: {error.message}</p>
       </main>
     );
   }
 
   const initialItems = data ?? [];
-  const total = count ?? initialItems.length;
+  const total = Math.min(count ?? initialItems.length, MAX_VISIBLE_POSTS);
 
   const FILLERS = [
     {
@@ -50,19 +50,20 @@ export default async function HomePage() {
     },
   ];
 
-  const rowsize = 3;
-  const missing = (rowsize - (initialItems.length % rowsize)) % rowsize;
+  const rowSize = 3;
+  const missing = (rowSize - (initialItems.length % rowSize)) % rowSize;
   const initialFillers = Array.from(
     { length: missing },
-    (_, i) => FILLERS[i % FILLERS.length]
+    (_, i) => FILLERS[i % FILLERS.length],
   );
 
   return (
-    <main className="w-full bg-stone-100 min-h-screen">
-      <section className="max-w-6xl mx-auto bg-stone-100">
+    <main className="min-h-screen w-full bg-stone-100">
+      <section className="mx-auto max-w-6xl bg-stone-100">
         <VideoBanner />
         <Socials />
-        <p className="text-center lg:pb-10 pb-5 text-xs lg:text-lg text-stone-700">
+
+        <p className="pb-5 text-center text-xs text-stone-700 lg:pb-10 lg:text-lg">
           Apasă pe imagine pentru a accesa întreaga știre.
         </p>
 

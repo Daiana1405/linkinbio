@@ -10,6 +10,7 @@ const nextConfig: NextConfig = {
         pathname: "/storage/v1/object/public/images/**",
       },
     ],
+    qualities: [60, 70, 75],
   },
 
   // ✅ works across versions/runtimes (incl. Netlify runtime)

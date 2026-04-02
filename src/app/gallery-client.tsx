@@ -36,25 +36,37 @@ export default function GalleryClient({
 
   async function loadMore() {
     if (loading || !hasMore) return;
+
     setLoading(true);
+
     try {
       const url = `/api/posts?limit=${pageSize}&offset=${offset}`;
-      const res = await fetch(url, { cache: "no-store" });
-      const json = await res.json();
-      if (json?.ok && Array.isArray(json.items)) {
-        setItems((prev) => [...prev, ...json.items]);
-        setOffset(offset + json.items.length);
+      const res = await fetch(url);
+
+      if (!res.ok) {
+        throw new Error("Failed to load more posts");
       }
+
+      const json = await res.json();
+
+      if (json?.ok && Array.isArray(json.items) && json.items.length > 0) {
+        setItems((prev) => [...prev, ...json.items]);
+        setOffset((prev) => prev + json.items.length);
+      } else {
+        setOffset(total);
+      }
+    } catch (error) {
+      console.error(error);
     } finally {
       setLoading(false);
     }
   }
 
-  const rowsize = 3;
-  const missing = (rowsize - (items.length % rowsize)) % rowsize;
+  const rowSize = 3;
+  const missing = (rowSize - (items.length % rowSize)) % rowSize;
   const autoFillers = Array.from(
     { length: missing },
-    (_, i) => fillers[i % fillers.length]
+    (_, i) => fillers[i % fillers.length],
   );
 
   const currentFillers =
@@ -62,49 +74,57 @@ export default function GalleryClient({
 
   return (
     <>
-      <ul className="grid grid-cols-3 md:gap-3 gap-1 md:p-3 p-1">
-        {items.map((p) => (
-          <li
-            key={p.id}
-            className="overflow-hidden rounded-xs"
-          >
-            <Link
-              href={p.link_url ?? "#"}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="block"
-            >
-              <div className="relative w-full aspect-[4/5]">
-                <Image
-                  src={p.image_url}
-                  alt={p.title || "post"}
-                  fill
-                  className="object-cover hover:scale-105 hover:grayscale-50 transition-transform duration-500"
-                  sizes="33vw"
-                />
-              </div>
-            </Link>
-          </li>
-        ))}
+      <ul className="grid grid-cols-3 gap-1 p-1 md:gap-3 md:p-3">
+        {items.map((post) => {
+          const image = (
+            <div className="relative aspect-[4/5] w-full">
+              <Image
+                src={post.image_url}
+                alt={post.title || "post"}
+                fill
+                quality={70}
+                className="object-cover transition-transform duration-500 hover:scale-105 hover:grayscale-50"
+                sizes="(max-width: 768px) 33vw, 33vw"
+              />
+            </div>
+          );
 
-        {currentFillers.map((f, i) => (
+          return (
+            <li key={post.id} className="overflow-hidden rounded-xs">
+              {post.link_url ? (
+                <Link
+                  href={post.link_url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="block"
+                >
+                  {image}
+                </Link>
+              ) : (
+                image
+              )}
+            </li>
+          );
+        })}
+
+        {currentFillers.map((filler, i) => (
           <li
             key={`filler-${offset}-${i}`}
             className="overflow-hidden rounded-xs"
           >
             <Link
-              href={f.href}
+              href={filler.href}
               target="_blank"
               rel="noopener noreferrer"
               className="block"
             >
-              <div className="relative w-full aspect-[4/5]">
+              <div className="relative aspect-[4/5] w-full">
                 <Image
-                  src={f.src}
-                  alt={f.alt ?? "placeholder"}
+                  src={filler.src}
+                  alt={filler.alt ?? "placeholder"}
                   fill
-                  className="object-contain hover:scale-105 hover:grayscale-50 transition-transform duration-500"
-                  sizes="33vw"
+                  className="object-contain transition-transform duration-500 hover:scale-105 hover:grayscale-50"
+                  sizes="(max-width: 768px) 33vw, 33vw"
                 />
               </div>
             </Link>
@@ -117,7 +137,7 @@ export default function GalleryClient({
           <button
             onClick={loadMore}
             disabled={loading}
-            className="rounded bg-stone-900 text-white px-4 py-2 disabled:opacity-60"
+            className="rounded bg-stone-900 px-4 py-2 text-white disabled:opacity-60"
           >
             {loading ? "Se încarcă…" : "Încarcă mai multe"}
           </button>
