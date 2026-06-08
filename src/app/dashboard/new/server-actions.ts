@@ -32,7 +32,7 @@ function normalizeUrl(u?: string) {
 
 export async function createPost(
   _prev: CreatePostState,
-  formData: FormData
+  formData: FormData,
 ): Promise<CreatePostState> {
   const supabase = await createClient();
 
